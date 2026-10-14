@@ -1,0 +1,10 @@
+const router = require('express').Router();
+const e = require('../controllers/enrollmentController');
+const { protect, authorize } = require('../middleware/authMiddleware');
+router.use(protect);
+router.get('/mine', authorize('student','admin'), e.myEnrollments);
+router.post('/:courseId', authorize('student','admin'), e.enroll);
+router.get('/course/:courseId/students', authorize('instructor','admin'), e.courseStudents);
+router.put('/:courseId/lessons/:lessonId/complete', authorize('student','admin'), e.markLessonComplete);
+router.delete('/:courseId/lessons/:lessonId/complete', authorize('student','admin'), e.unmarkLessonComplete);
+module.exports = router;
